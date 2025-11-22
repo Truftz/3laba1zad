@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Результат</title>
+    <link href="{{ url_for('static', path='/styles.css') }}" rel="stylesheet">
+</head>
+<body>
+    <h1>Результаты обработки</h1>
+
+    <table>
+        <tr>
+            <th>Исходное изображение</th>
+            <th>Обработанное изображение</th>
+            <th>График цветов</th>
+        </tr>
+        <tr>
+            <td><img src="{{ original_image }}" alt="Original"></td>
+            <td><img src="{{ processed_image }}" alt="Processed"></td>
+            <td><img src="{{ color_histogram }}" alt="Color Histogram"></td>
+        </tr>
+    </table>
+
+    <br>
+    <a href="/">Вернуться на главную</a>
+</body>
+</html>

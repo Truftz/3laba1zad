@@ -1,0 +1,34 @@
+name: CI Pipeline
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.8'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install fastapi uvicorn jinja2 python-multipart pillow matplotlib numpy requests pytest httpx
+
+    - name: Run tests
+      run: |
+        python -m pytest test_main.py -v
+
+    - name: Test server startup
+      run: |
+        python -c "from main import app; print('✅ Server imports successfully')"
+        # Запускаем сервер в фоне и проверяем что он работает
+        timeout 30s uvicorn main:app --host 0.0.0.0 --port 8000 &
+        sleep 5
+        curl -f http://localhost:8000/ || exit 1
+        echo "✅ Server started successfully"
