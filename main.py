@@ -98,13 +98,28 @@ def create_color_histogram(image: Image.Image) -> Image.Image:
 
 def save_image_to_static(image: Image.Image, filename: str) -> str:
     """Сохраняет изображение в папку static и возвращает URL."""
-    # Создаем папку если её нет
-    os.makedirs("static", exist_ok=True)
+    try:
+        # Создаем папку если её нет
+        os.makedirs("static", exist_ok=True)
 
-    static_path = f"static/{filename}"
-    image.save(static_path, "JPEG")
-    return f"/static/{filename}"
+        # Очищаем имя файла
+        clean_filename = "".join(c for c in filename if c.isalnum() or c in ('-', '_', '.'))
+        timestamp = str(int(time.time()))
+        final_filename = f"{timestamp}_{clean_filename}"
 
+        static_path = f"static/{final_filename}"
+
+        # Конвертируем в RGB если изображение в режиме с альфа-каналом
+        if image.mode != 'RGB':
+            image = image.convert('RGB')
+
+        # Сохраняем как JPEG
+        image.save(static_path, "JPEG")
+        return f"/static/{final_filename}"
+
+    except Exception as e:
+        print(f"Error saving image: {e}")
+        return "/static/error.jpg"
 
 @app.post("/process", response_class=HTMLResponse)
 async def process_image(
