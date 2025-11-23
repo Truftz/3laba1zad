@@ -6,10 +6,25 @@
     <link href="{{ url_for('static', path='/styles.css') }}" rel="stylesheet">
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     <script>
-        function onSubmit(token) {
+        function onCaptchaSuccess(token) {
             document.getElementById("captchaResponse").value = token;
-            document.getElementById("uploadForm").submit();
+            document.getElementById("submitBtn").disabled = false;
+            document.getElementById("submitBtn").style.opacity = "1";
+            document.getElementById("submitBtn").style.cursor = "pointer";
         }
+
+        function onCaptchaExpired() {
+            document.getElementById("captchaResponse").value = "";
+            document.getElementById("submitBtn").disabled = true;
+            document.getElementById("submitBtn").style.opacity = "0.5";
+            document.getElementById("submitBtn").style.cursor = "not-allowed";
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById("submitBtn").disabled = true;
+            document.getElementById("submitBtn").style.opacity = "0.5";
+            document.getElementById("submitBtn").style.cursor = "not-allowed";
+        });
     </script>
 </head>
 <body>
@@ -32,12 +47,16 @@
 
         <fieldset>
             <legend>CAPTCHA</legend>
-            <div class="g-recaptcha" data-sitekey="6LdXCBUsAAAAAEvSSkQxng4qB8UUe9arjZMTq2T1" data-callback="onSubmit"></div>
+            <div class="g-recaptcha"
+                 data-sitekey="ваш_site_key"
+                 data-callback="onCaptchaSuccess"
+                 data-expired-callback="onCaptchaExpired">
+            </div>
             <input type="hidden" id="captchaResponse" name="captcha_response">
         </fieldset>
 
         <br>
-        <button type="submit">Обработать изображение</button>
+        <button type="submit" id="submitBtn">Обработать изображение</button>
     </form>
 </body>
 </html>

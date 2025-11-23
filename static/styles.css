@@ -85,3 +85,23 @@ input[type="file"] {
 input[type="radio"] {
     margin-right: 8px;
 }
+
+#submitBtn:disabled {
+    background-color: #cccccc;
+    cursor: not-allowed;
+    opacity: 0.5;
+}
+
+#submitBtn {
+    transition: all 0.3s ease;
+}
+
+#submitBtn:enabled {
+    background-color: #4CAF50;
+    opacity: 1;
+    cursor: pointer;
+}
+
+#submitBtn:enabled:hover {
+    background-color: #45a049;
+}
