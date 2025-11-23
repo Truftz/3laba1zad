@@ -31,7 +31,7 @@ def test_swap_image_logic():
         result_img = swap_image_parts(test_img, "swap_lr")
         assert result_img is not None
         assert result_img.size == test_img.size
-        print("✓ Logic test passed!")
+        print("Logic test passed!")
     except Exception as e:
         pytest.fail(f"Logic test failed: {e}")
 
@@ -48,7 +48,7 @@ def test_histogram_creation():
         histogram = create_color_histogram(test_img)
         assert histogram is not None
         assert histogram.size[0] > 0  # Проверяем что изображение создано
-        print("✓ Histogram test passed!")
+        print("Histogram test passed!")
     except Exception as e:
         pytest.fail(f"Histogram test failed: {e}")
 
